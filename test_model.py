@@ -60,7 +60,7 @@ cap = cv2.VideoCapture(0)
 face_mesh_mp = mp.solutions.face_mesh
 face_mesh = face_mesh_mp.FaceMesh()
 drawing_mp = mp.solutions.drawing_utils
-model = keras.models.load_model('OwnDataModel2.h5')
+model = keras.models.load_model('OwnDataModel3.h5')
 
 
 classes = ['Disgust', 'Happy', 'Normal', 'Sad', 'Surprised']
@@ -80,13 +80,12 @@ while True:
             data = np.array([face])
             prediction = model.predict(data)
             label = np.argmax(prediction)
+            conf = int(round(np.max(prediction), 2) * 100)
 
-            print(label)
-            print(classes[label])
             cv2.imshow("Cropped", face)
 
             cv2.rectangle(img, (min_x, min_y), (max_x, max_y), color_list[label], 4)
-            cv2.putText(img, f"{classes[label]}", (min_x, min_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 1, color_list[label], 2)
+            cv2.putText(img, f"{classes[label]} {conf}%", (min_x, min_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 1, color_list[label], 2)
         except Exception as e:
             pass
     c_time = time()

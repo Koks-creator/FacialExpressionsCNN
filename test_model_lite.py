@@ -55,11 +55,12 @@ while True:
             data = np.array([img_cropped])
             prediction = model.predict(data)
             label = np.argmax(prediction)
+            conf = int(round(np.max(prediction), 2) * 100)
 
             print(classes[label])
             cv2.imshow("Cropped", img_cropped)
             cv2.rectangle(img, (min_x, min_y), (max_x, max_y), color_list[label], 4)
-            cv2.putText(img, f"{classes[label]}", (min_x, min_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 1, color_list[label], 2)
+            cv2.putText(img, f"{classes[label]} {conf}%", (min_x, min_y - 20), cv2.FONT_HERSHEY_SIMPLEX, 1, color_list[label], 2)
         except Exception:
             pass
 
